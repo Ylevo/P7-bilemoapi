@@ -16,10 +16,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[Get(normalizationContext: ['groups' => ['user:read']])]
-#[GetCollection(normalizationContext: ['groups' => ['users:read']])]
-#[Post(denormalizationContext: ['groups' => ['user:new']])]
-#[Delete]
+#[ApiResource(
+    securityMessage: "Hey that's not your user."
+)]
+#[Get(
+    normalizationContext: ['groups' => ['user:read']],
+    security: 'is_fully_authenticated() and object.getClient() == user')]
+#[GetCollection(
+    paginationItemsPerPage: 10,
+    normalizationContext: ['groups' => ['users:read']])]
+#[Post(denormalizationContext: ['groups' => ['user:new']],
+    security: 'is_fully_authenticated() and object.getClient() == user')]
+#[Delete(
+    security: 'is_fully_authenticated() and object.getClient() == user')]
 class User
 {
     #[Groups(['user:read', 'users:read'])]
@@ -52,7 +61,7 @@ class User
     private ?string $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
     public function getId(): ?int
