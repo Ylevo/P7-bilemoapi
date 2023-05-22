@@ -2,26 +2,42 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['product:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['products:read']])
+    ]
+)]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read', 'products:read'])]
     private ?int $id = null;
 
+    #[Groups(['product:read', 'products:read'])]
+    #[ApiFilter(SearchFilter::class, strategy : 'partial')]
     #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
+    #[Groups('product:read')]
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+    #[Groups('product:read')]
     #[ORM\Column]
     private ?int $price = null;
 
@@ -72,6 +88,12 @@ class Product
     public function getReleaseDate(): ?\DateTimeImmutable
     {
         return $this->releaseDate;
+    }
+
+    #[Groups('product:read')]
+    public function getFormattedReleaseDate(): string
+    {
+        return $this->releaseDate->format('Y-m-d');
     }
 
     public function setReleaseDate(\DateTimeImmutable $releaseDate): self
