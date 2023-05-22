@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 10,
     normalizationContext: ['groups' => ['users:read']])]
 #[Post(denormalizationContext: ['groups' => ['user:new']],
-    security: 'is_fully_authenticated() and object.getClient() == user')]
+    security: 'is_fully_authenticated()')]
 #[Delete(
     security: 'is_fully_authenticated() and object.getClient() == user')]
 class User
