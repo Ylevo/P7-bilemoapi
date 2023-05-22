@@ -1,0 +1,4 @@
+api_platform:
+  swagger:
+    swagger_ui_extra_configuration:
+      defaultModelsExpandDepth: -1

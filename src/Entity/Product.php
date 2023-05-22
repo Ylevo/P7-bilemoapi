@@ -12,12 +12,15 @@ use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
     operations: [
         new Get(normalizationContext: ['groups' => ['product:read']]),
-        new GetCollection(normalizationContext: ['groups' => ['products:read']])
+        new GetCollection(
+            paginationItemsPerPage: 10,
+            normalizationContext: ['groups' => ['products:read']])
     ]
 )]
 class Product
@@ -91,6 +94,7 @@ class Product
     }
 
     #[Groups('product:read')]
+    #[SerializedName('releaseDate')]
     public function getFormattedReleaseDate(): string
     {
         return $this->releaseDate->format('Y-m-d');
