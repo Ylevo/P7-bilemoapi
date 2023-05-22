@@ -16,19 +16,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(
-    securityMessage: "Hey that's not your user."
-)]
 #[Get(
     normalizationContext: ['groups' => ['user:read']],
-    security: 'is_fully_authenticated() and object.getClient() == user')]
+    security: 'object.getClient() == user',
+    securityMessage: "Hey that's not your user.")]
 #[GetCollection(
     paginationItemsPerPage: 10,
     normalizationContext: ['groups' => ['users:read']])]
-#[Post(denormalizationContext: ['groups' => ['user:new']],
-    security: 'is_fully_authenticated()')]
+#[Post(denormalizationContext: ['groups' => ['user:new']])]
 #[Delete(
-    security: 'is_fully_authenticated() and object.getClient() == user')]
+    security: 'object.getClient() == user',
+    securityMessage: "Hey that's not your user.")]
 class User
 {
     #[Groups(['user:read', 'users:read'])]
