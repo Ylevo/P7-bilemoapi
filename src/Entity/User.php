@@ -2,33 +2,57 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[Get(normalizationContext: ['groups' => ['user:read']])]
+#[GetCollection(normalizationContext: ['groups' => ['users:read']])]
+#[Post(denormalizationContext: ['groups' => ['user:new']])]
+#[Delete]
 class User
 {
+    #[Groups(['user:read', 'users:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['user:read', 'users:read', 'user:new'])]
+    #[ApiFilter(SearchFilter::class, strategy : 'partial')]
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
+    #[Groups(['user:read', 'users:read', 'user:new'])]
+    #[ApiFilter(SearchFilter::class, strategy : 'partial')]
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
+    #[Groups(['user:read', 'user:new'])]
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $phoneNumber = null;
 
+    #[Groups(['user:read', 'user:new'])]
+    #[ApiFilter(SearchFilter::class, strategy : 'partial')]
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Client $client = null;
 
     public function getId(): ?int
