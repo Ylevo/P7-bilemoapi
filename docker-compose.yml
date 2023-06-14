@@ -7,7 +7,8 @@ services:
       - "3306:3306"
     restart: always
     volumes:
-      - ./var/mysql:/var/lib/mysql
+      - ~/mysql:/var/lib/mysql
+      - ./dump/init.sql:/data/application/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: BileMoApi
