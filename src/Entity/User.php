@@ -23,36 +23,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[GetCollection(
     paginationItemsPerPage: 10,
     normalizationContext: ['groups' => ['users:read']])]
-#[Post(denormalizationContext: ['groups' => ['user:new']])]
+#[Post(normalizationContext: ['groups' => ['user:new:read']],
+    denormalizationContext: ['groups' => ['user:new']])]
 #[Delete(
     security: 'object.getClient() == user',
     securityMessage: "User not found.")]
 class User
 {
-    #[Groups(['user:read', 'users:read'])]
+    #[Groups(['user:read', 'users:read', 'user:new:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['user:read', 'users:read', 'user:new'])]
+    #[Groups(['user:read', 'users:read', 'user:new', 'user:new:read'])]
     #[ApiFilter(SearchFilter::class, strategy : 'partial')]
     #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
-    #[Groups(['user:read', 'users:read', 'user:new'])]
+    #[Groups(['user:read', 'users:read', 'user:new', 'user:new:read'])]
     #[ApiFilter(SearchFilter::class, strategy : 'partial')]
     #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    #[Groups(['user:read', 'user:new'])]
+    #[Groups(['user:read', 'user:new', 'user:new:read'])]
     #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $phoneNumber = null;
 
-    #[Groups(['user:read', 'user:new'])]
+    #[Groups(['user:read', 'user:new', 'user:new:read'])]
     #[ApiFilter(SearchFilter::class, strategy : 'partial')]
     #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
