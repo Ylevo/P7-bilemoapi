@@ -19,14 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Get(
     normalizationContext: ['groups' => ['user:read']],
     security: 'object.getClient() == user',
-    securityMessage: "Hey that's not your user.")]
+    securityMessage: "User not found.")]
 #[GetCollection(
     paginationItemsPerPage: 10,
     normalizationContext: ['groups' => ['users:read']])]
 #[Post(denormalizationContext: ['groups' => ['user:new']])]
 #[Delete(
     security: 'object.getClient() == user',
-    securityMessage: "Hey that's not your user.")]
+    securityMessage: "User not found.")]
 class User
 {
     #[Groups(['user:read', 'users:read'])]
