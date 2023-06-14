@@ -2,7 +2,7 @@ version: '3.8'
 services:
   db:
     image: mysql:latest
-    container_name: mysql_BileMoApi
+    container_name: mysql_bilemoapi
     ports:
       - "3306:3306"
     command: --init-file /data/application/init.sql
@@ -12,4 +12,4 @@ services:
       - ./dump/init.sql:/data/application/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: BileMoApi
+      MYSQL_DATABASE: bilemoapi

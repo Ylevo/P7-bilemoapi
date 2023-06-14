@@ -3,8 +3,8 @@
 -- Host: localhost    Database: BileMoApi
 -- ------------------------------------------------------
 -- Server version	8.0.32
-
-USE BileMoApi;
+CREATE DATABASE IF NOT EXISTS bilemoapi;
+USE bilemoapi;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
