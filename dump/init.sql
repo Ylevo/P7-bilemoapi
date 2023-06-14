@@ -4,6 +4,8 @@
 -- ------------------------------------------------------
 -- Server version	8.0.32
 
+USE BileMoApi;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -18,8 +20,6 @@
 --
 -- Table structure for table `client`
 --
-
-USE 'BileMoApi';
 
 DROP TABLE IF EXISTS `client`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

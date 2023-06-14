@@ -5,6 +5,7 @@ services:
     container_name: mysql_BileMoApi
     ports:
       - "3306:3306"
+    command: --init-file /data/application/init.sql
     restart: always
     volumes:
       - ~/mysql:/var/lib/mysql
